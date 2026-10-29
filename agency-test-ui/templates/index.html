@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Agency - Multi-Agent Studio Test</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Marked.js để render markdown chuyên nghiệp -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <!-- Cột trái: Danh sách phòng ban -->
+    <div class="sidebar">
+        <div class="brand">
+            <span class="brand-icon">🎭</span>
+            <div>
+                <h1>The Agency</h1>
+                <p>AI Studio Test (200+ Agents)</p>
+            </div>
+        </div>
+        <div class="divisions-list" id="divisionsList">
+            <!-- Render động bằng JS -->
+        </div>
+    </div>
+
+    <!-- Cột phải: Không gian thực thi -->
+    <div class="main-content">
+        <!-- Top bar cài đặt cấu hình -->
+        <div class="top-bar">
+            <div class="controls-row">
+                <select id="routerUrlSelect" title="Chọn Router endpoint">
+                    <option value="https://openrouter.ai/api/v1">OpenRouter (Mặc định)</option>
+                    <option value="https://api.openai.com/v1">OpenAI Native</option>
+                    <option value="https://api.groq.com/openai/v1">Groq Cloud (Free)</option>
+                </select>
+
+                <select id="modelSelect" title="Chọn Model AI">
+                    <option value="google/gemma-2-9b-it:free">google/gemma-2-9b-it:free (OpenRouter)</option>
+                    <option value="meta-llama/llama-3.3-70b-instruct:free">meta-llama/llama-3.3-70b-instruct:free (OpenRouter)</option>
+                    <option value="deepseek/deepseek-r1:free">deepseek/deepseek-r1:free (OpenRouter)</option>
+                    <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (Groq)</option>
+                </select>
+
+                <input type="password" id="apiKeyInput" placeholder="Dán API Key vào đây (sk-or-...)" style="width: 250px;">
+            </div>
+
+            <div class="controls-row">
+                <button class="btn btn-secondary" id="btnViewPrompt">📄 Xem System Prompt</button>
+            </div>
+        </div>
+
+        <!-- Khung chính -->
+        <div class="workspace">
+            <!-- Cột Trái: Chọn Agent & Nhập Task -->
+            <div class="pane">
+                <div class="pane-header">
+                    <span>1. Chọn Chuyên Gia & Giao Nhiệm Vụ</span>
+                    <select id="agentSelect" style="max-width: 260px;">
+                        <!-- Đổ danh sách agents -->
+                    </select>
+                </div>
+                <div class="pane-body">
+                    <textarea id="taskInput" placeholder="Ví dụ: 'Hãy thiết kế cấu trúc database cho ứng dụng thương mại điện tử có tính năng Flash Sale...'"></textarea>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span id="statusMeta" style="font-size: 0.8rem; color: #94a3b8;">Sẵn sàng</span>
+                        <button class="btn" id="btnRun">
+                            <span class="loader" id="loader"></span>
+                            🚀 Thực Thi Với Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cột Phải: Kết Quả -->
+            <div class="pane">
+                <div class="pane-header">
+                    <span>2. Kết Quả Bàn Giao Từ Agent</span>
+                </div>
+                <div class="pane-body">
+                    <div class="result-box" id="resultBox">
+                        <p style="color: #64748b;">Kết quả sau khi Agent phân tích và xử lý sẽ hiển thị tại đây...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Xem System Prompt -->
+    <div class="modal-overlay" id="promptModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">System Prompt</h3>
+                <button class="btn btn-secondary" id="btnCloseModal">✕ Đóng</button>
+            </div>
+            <div class="modal-body" id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
+

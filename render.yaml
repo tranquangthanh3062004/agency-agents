@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: agency-agents-studio
+    env: python
+    buildCommand: "pip install -r agency-test-ui/requirements.txt"
+    startCommand: "python -m uvicorn main:app --app-dir agency-test-ui --host 0.0.0.0 --port $PORT"
+    plan: free
+    autoDeploy: true
+
