@@ -3,35 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Agency - Multi-Agent Studio Test</title>
+    <title>The Agency - Multi-Agent Studio</title>
     <link rel="stylesheet" href="/static/style.css">
     <!-- Marked.js để render markdown chuyên nghiệp -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <!-- Cột trái: Danh sách phòng ban -->
+    <!-- Cột trái: Sidebar -->
     <div class="sidebar">
         <div class="brand">
             <span class="brand-icon">🎭</span>
             <div>
                 <h1>The Agency</h1>
-                <p>AI Studio Test (200+ Agents)</p>
+                <p>AI Virtual Company Studio</p>
             </div>
         </div>
+
+        <!-- Mode Toggle -->
+        <div class="mode-switch-box">
+            <button class="mode-btn active" id="btnModeSingle">👤 Solo Agent</button>
+            <button class="mode-btn" id="btnModePipeline">👥 NEXUS Team</button>
+        </div>
+
+        <div class="sidebar-title" id="sidebarTitle">18 PHÒNG BAN</div>
         <div class="divisions-list" id="divisionsList">
             <!-- Render động bằng JS -->
         </div>
     </div>
 
-    <!-- Cột phải: Không gian thực thi -->
+    <!-- Cột phải: Không gian làm việc -->
     <div class="main-content">
         <!-- Top bar cài đặt cấu hình -->
         <div class="top-bar">
             <div class="controls-row">
                 <select id="routerUrlSelect" title="Chọn Router endpoint">
-                    <option value="https://openrouter.ai/api/v1">OpenRouter (Mặc định)</option>
-                    <option value="https://api.openai.com/v1">OpenAI Native</option>
+                    <option value="https://openrouter.ai/api/v1">OpenRouter API</option>
                     <option value="https://api.groq.com/openai/v1">Groq Cloud (Free)</option>
+                    <option value="https://api.openai.com/v1">OpenAI Native</option>
                 </select>
 
                 <select id="modelSelect" title="Chọn Model AI">
@@ -41,44 +49,100 @@
                     <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (Groq)</option>
                 </select>
 
-                <input type="password" id="apiKeyInput" placeholder="Dán API Key vào đây (sk-or-...)" style="width: 250px;">
+                <input type="password" id="apiKeyInput" placeholder="Dán API Key vào đây (sk-or-...)" style="width: 240px;">
             </div>
 
             <div class="controls-row">
+                <a href="/admin" class="btn btn-secondary" style="text-decoration: none; font-size: 0.8rem; padding: 6px 12px;">📊 Quản Lý Leads</a>
                 <button class="btn btn-secondary" id="btnViewPrompt">📄 Xem System Prompt</button>
             </div>
         </div>
 
         <!-- Khung chính -->
         <div class="workspace">
-            <!-- Cột Trái: Chọn Agent & Nhập Task -->
+            <!-- Cột Trái: Input & Configuration -->
             <div class="pane">
                 <div class="pane-header">
-                    <span>1. Chọn Chuyên Gia & Giao Nhiệm Vụ</span>
-                    <select id="agentSelect" style="max-width: 260px;">
+                    <span id="paneHeaderTitle">1. Chọn Chuyên Gia & Nhiệm Vụ</span>
+                    <!-- Solo Mode Selector -->
+                    <select id="agentSelect" style="max-width: 250px;">
                         <!-- Đổ danh sách agents -->
                     </select>
+
+                    <!-- Pipeline Mode Selector -->
+                    <select id="pipelinePresetSelect" style="display: none; max-width: 270px;">
+                        <option value="dev-qa">⚡ Dev ➔ QA Reality Check</option>
+                        <option value="vn-launch">🇻🇳 Ra Mắt Kinh Doanh VN (Pháp Lý ➔ Thuế ➔ TMĐT)</option>
+                        <option value="marketing-growth">📈 Tăng Trưởng (Content ➔ SEO Audit)</option>
+                        <option value="custom">🛠️ Tự Chọn Đội Hình (Custom)</option>
+                    </select>
                 </div>
+
+                <!-- Custom Pipeline Controls (Ẩn mặc định) -->
+                <div class="custom-pipeline-box" id="customPipelineBox" style="display: none;">
+                    <div class="step-badge">Bước 1:</div>
+                    <select id="customStep1Select"></select>
+                    <span style="color: #64748b;">➔</span>
+                    <div class="step-badge">Bước 2:</div>
+                    <select id="customStep2Select"></select>
+                </div>
+
                 <div class="pane-body">
-                    <textarea id="taskInput" placeholder="Ví dụ: 'Hãy thiết kế cấu trúc database cho ứng dụng thương mại điện tử có tính năng Flash Sale...'"></textarea>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label class="input-label" id="taskLabel">Mô tả bài toán / Yêu cầu dự án:</label>
+                    <textarea id="taskInput" placeholder="Ví dụ: 'Hãy thiết kế trang Landing Page bán khóa học lập trình AI, có form thu thập thông tin và bảng so sánh học phí...'"></textarea>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
                         <span id="statusMeta" style="font-size: 0.8rem; color: #94a3b8;">Sẵn sàng</span>
                         <button class="btn" id="btnRun">
                             <span class="loader" id="loader"></span>
-                            🚀 Thực Thi Với Agent
+                            <span id="btnRunText">🚀 Thực Thi Với Agent</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Cột Phải: Kết Quả -->
+            <!-- Cột Phải: Kết Quả & Live Preview -->
             <div class="pane">
                 <div class="pane-header">
-                    <span>2. Kết Quả Bàn Giao Từ Agent</span>
+                    <!-- Tabs điều hướng -->
+                    <div class="tabs-header">
+                        <button class="tab-btn active" id="tabDoc">📝 Tài Liệu Bàn Giao</button>
+                        <button class="tab-btn" id="tabPreview">🖥️ Live Code Preview</button>
+                        <button class="tab-btn" id="tabPipelineSteps" style="display: none;">📑 Các Bước Pipeline</button>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-icon" id="btnCopy" title="Sao chép kết quả">📋</button>
+                        <button class="btn-icon" id="btnDownload" title="Tải file Markdown (.md)">💾</button>
+                    </div>
                 </div>
-                <div class="pane-body">
-                    <div class="result-box" id="resultBox">
-                        <p style="color: #64748b;">Kết quả sau khi Agent phân tích và xử lý sẽ hiển thị tại đây...</p>
+
+                <div class="pane-body" style="padding: 0;">
+                    <!-- View 1: Markdown Document -->
+                    <div class="tab-content active" id="contentDoc">
+                        <div class="result-box" id="resultBox">
+                            <p style="color: #64748b; font-style: italic;">Kết quả bàn giao từ các chuyên gia AI sẽ xuất hiện tại đây...</p>
+                        </div>
+                        <!-- Refine Toolbar -->
+                        <div class="refine-bar" id="refineBar" style="display: none; padding: 10px 14px; background: #0b1120; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center;">
+                            <input type="text" id="refineInput" placeholder="Yêu cầu tinh chỉnh (VD: Đổi màu nút sang xanh lá, bổ sung chính sách hoàn tiền...)" style="flex: 1; font-size: 0.82rem;">
+                            <button class="btn btn-secondary" id="btnRefine" style="white-space: nowrap; font-size: 0.8rem;">⚡ Tinh Chỉnh</button>
+                        </div>
+                    </div>
+
+                    <!-- View 2: Live Code Preview -->
+                    <div class="tab-content" id="contentPreview">
+                        <div class="preview-toolbar">
+                            <span>Chế độ Xem Trực Quan: Sandbox IFrame</span>
+                            <button class="btn-sm" id="btnRefreshPreview">🔄 Tải Lại Preview</button>
+                        </div>
+                        <iframe id="previewFrame" sandbox="allow-scripts allow-modals" style="width: 100%; height: calc(100% - 36px); border: none; background: #ffffff;"></iframe>
+                    </div>
+
+                    <!-- View 3: Pipeline Timeline Steps -->
+                    <div class="tab-content" id="contentPipelineSteps">
+                        <div class="pipeline-timeline" id="pipelineTimeline">
+                            <p style="color: #64748b; padding: 16px;">Chưa có dữ liệu pipeline. Hãy chọn chế độ NEXUS Team và bấm chạy.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,4 +163,3 @@
     <script src="/static/app.js"></script>
 </body>
 </html>
-

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Agency OS — Quản Trị Khách Hàng (Leads Admin)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        darkBg: '#090d16',
+                        cardBg: '#131b2e',
+                        borderClr: '#24324f'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-darkBg text-slate-100 font-sans min-h-screen flex flex-col">
+
+    <!-- Top Navigation -->
+    <header class="border-b border-borderClr bg-slate-950/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl">🎭</span>
+            <div>
+                <h1 class="text-lg font-bold text-white tracking-tight">The Agency OS <span class="text-blue-500 font-mono text-xs px-2 py-0.5 bg-blue-950 border border-blue-500/30 rounded">Admin Portal</span></h1>
+                <p class="text-xs text-slate-400">Quản lý khách hàng, brief dự án & điều phối sản xuất</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 text-sm">
+            <a href="/" target="_blank" class="px-3 py-1.5 rounded-lg border border-borderClr hover:bg-slate-800 text-slate-300 transition text-xs flex items-center gap-1.5">
+                <i class="fa-solid fa-external-link"></i> Xem Landing Page
+            </a>
+            <a href="/studio" class="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition text-xs flex items-center gap-1.5 shadow-md shadow-blue-600/30">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Mở AI Studio
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
+        <!-- Stats Overview Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-cardBg border border-borderClr rounded-xl p-5">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Tổng Số Yêu Cầu</p>
+                        <h3 class="text-3xl font-black text-white mt-1" id="statTotalLeads">0</h3>
+                    </div>
+                    <span class="w-10 h-10 rounded-lg bg-blue-600/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-users"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="bg-cardBg border border-borderClr rounded-xl p-5">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Yêu Cầu Mới</p>
+                        <h3 class="text-3xl font-black text-amber-400 mt-1" id="statNewLeads">0</h3>
+                    </div>
+                    <span class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-bolt"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="bg-cardBg border border-borderClr rounded-xl p-5">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Đang Thực Thi</p>
+                        <h3 class="text-3xl font-black text-sky-400 mt-1" id="statInProgress">0</h3>
+                    </div>
+                    <span class="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-gears"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="bg-cardBg border border-borderClr rounded-xl p-5">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Đã Hoàn Thành</p>
+                        <h3 class="text-3xl font-black text-emerald-400 mt-1" id="statCompleted">0</h3>
+                    </div>
+                    <span class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="bg-cardBg border border-borderClr rounded-2xl overflow-hidden shadow-xl">
+            <!-- Table Controls Toolbar -->
+            <div class="p-4 border-b border-borderClr flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-900/40">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                        <input type="text" id="searchInput" placeholder="Tìm theo tên hoặc SĐT..." class="w-full bg-slate-900 border border-borderClr rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <select id="statusFilter" class="bg-slate-900 border border-borderClr rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none">
+                        <option value="all">Tất cả trạng thái</option>
+                        <option value="new">Mới (Chưa xử lý)</option>
+                        <option value="contacted">Đã liên hệ</option>
+                        <option value="in-progress">Đang thực thi</option>
+                        <option value="completed">Đã hoàn thành</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <button id="btnExportCsv" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-borderClr transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-csv"></i> Xuất CSV
+                    </button>
+                    <button id="btnRefresh" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-borderClr transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-right"></i> Làm Mới
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-slate-950/60 border-b border-borderClr text-slate-400 font-semibold uppercase tracking-wider">
+                            <th class="p-4">Thời Gian</th>
+                            <th class="p-4">Khách Hàng</th>
+                            <th class="p-4">Số Điện Thoại / Zalo</th>
+                            <th class="p-4">Gói Dịch Vụ</th>
+                            <th class="p-4">Nội Dung Brief</th>
+                            <th class="p-4">Trạng Thái</th>
+                            <th class="p-4 text-right">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leadsTableBody" class="divide-y divide-borderClr text-slate-300">
+                        <tr>
+                            <td colspan="7" class="p-8 text-center text-slate-500">Đang tải dữ liệu khách hàng...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detail & Action Modal -->
+    <div id="leadModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-borderClr rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl">
+            <div class="p-5 border-b border-borderClr flex justify-between items-center">
+                <h3 class="font-bold text-white text-sm" id="modalLeadName">Chi Tiết Brief Dự Án</h3>
+                <button id="btnCloseModal" class="text-slate-400 hover:text-white text-base">✕</button>
+            </div>
+            <div class="p-5 space-y-4 text-xs">
+                <div>
+                    <label class="text-slate-400 font-semibold uppercase text-[10px]">Thông tin liên hệ</label>
+                    <p class="text-white font-medium text-sm mt-0.5" id="modalContact"></p>
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold uppercase text-[10px]">Gói quan tâm</label>
+                    <p class="text-blue-400 font-semibold text-sm mt-0.5" id="modalService"></p>
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold uppercase text-[10px]">Yêu cầu chi tiết từ khách</label>
+                    <div class="bg-slate-950/80 p-3.5 rounded-lg border border-borderClr text-slate-200 mt-1 whitespace-pre-wrap leading-relaxed" id="modalDetails"></div>
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold uppercase text-[10px]">Cập nhật trạng thái</label>
+                    <select id="modalStatusSelect" class="w-full bg-slate-900 border border-borderClr rounded-lg p-2 text-xs text-white mt-1">
+                        <option value="new">🟡 Mới (Chưa xử lý)</option>
+                        <option value="contacted">📞 Đã liên hệ Zalo/Phone</option>
+                        <option value="in-progress">⚙️ Đang cho AI chạy trong Studio</option>
+                        <option value="completed">✅ Đã hoàn thành bàn giao</option>
+                    </select>
+                </div>
+            </div>
+            <div class="p-4 border-t border-borderClr bg-slate-900/50 flex justify-between items-center">
+                <button id="btnSendToStudio" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 shadow-md shadow-blue-600/30">
+                    <i class="fa-solid fa-bolt"></i> Chuyển Brief Vào Studio Chạy Ngay
+                </button>
+                <button id="btnSaveStatus" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs">
+                    Lưu Thay Đổi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        let allLeads = [];
+        let currentLeadIndex = -1;
+
+        const SERVICE_MAP = {
+            'audit-free': '🎁 Báo Cáo Audit Miễn Phí',
+            'landing-page': '💻 Landing Page 24h (990K)',
+            'ecommerce-shopee': '🛍️ Kế Hoạch Shopee/TikTok (1.2M)',
+            'legal-tax': '⚖️ Rà Soát Thuế & Pháp Lý (900K)',
+            'monthly-retainer': '🔄 Thuê Phòng Ban Tháng (2.5M)',
+            'private-setup': '🏢 Private Setup (19M)'
+        };
+
+        const STATUS_BADGES = {
+            'new': '<span class="px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 border border-amber-500/30">Mới</span>',
+            'contacted': '<span class="px-2 py-0.5 rounded-full bg-blue-950 text-blue-400 border border-blue-500/30">Đã Liên Hệ</span>',
+            'in-progress': '<span class="px-2 py-0.5 rounded-full bg-purple-950 text-purple-400 border border-purple-500/30">Đang Xử Lý</span>',
+            'completed': '<span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/30">Hoàn Thành</span>'
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchLeads();
+            setupEvents();
+        });
+
+        function setupEvents() {
+            document.getElementById('btnRefresh').addEventListener('click', fetchLeads);
+            document.getElementById('searchInput').addEventListener('input', renderTable);
+            document.getElementById('statusFilter').addEventListener('change', renderTable);
+            document.getElementById('btnCloseModal').addEventListener('click', () => {
+                document.getElementById('leadModal').classList.add('hidden');
+            });
+            document.getElementById('btnSaveStatus').addEventListener('click', saveStatus);
+            document.getElementById('btnSendToStudio').addEventListener('click', sendToStudio);
+            document.getElementById('btnExportCsv').addEventListener('click', exportCsv);
+        }
+
+        async function fetchLeads() {
+            try {
+                const res = await fetch('/api/leads');
+                const data = await res.json();
+                allLeads = data.leads || [];
+                updateStats();
+                renderTable();
+            } catch (err) {
+                console.error('Lỗi tải leads:', err);
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('statTotalLeads').textContent = allLeads.length;
+            const newCount = allLeads.filter(l => !l.status || l.status === 'new').length;
+            const inProgCount = allLeads.filter(l => l.status === 'in-progress' || l.status === 'contacted').length;
+            const doneCount = allLeads.filter(l => l.status === 'completed').length;
+
+            document.getElementById('statNewLeads').textContent = newCount;
+            document.getElementById('statInProgress').textContent = inProgCount;
+            document.getElementById('statCompleted').textContent = doneCount;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('leadsTableBody');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const filter = document.getElementById('statusFilter').value;
+
+            const filtered = allLeads.filter(l => {
+                const matchSearch = (l.name || '').toLowerCase().includes(search) || (l.contact || '').toLowerCase().includes(search);
+                const currentStatus = l.status || 'new';
+                const matchFilter = filter === 'all' || currentStatus === filter;
+                return matchSearch && matchFilter;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-500">Không tìm thấy yêu cầu nào phù hợp.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+            filtered.forEach((lead, idx) => {
+                const realIndex = allLeads.indexOf(lead);
+                const status = lead.status || 'new';
+                const badge = STATUS_BADGES[status] || STATUS_BADGES['new'];
+                const serviceLabel = SERVICE_MAP[lead.service] || lead.service;
+                const dateStr = lead.created_at ? new Date(lead.created_at).toLocaleString('vi-VN') : 'Vừa xong';
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/50 transition cursor-pointer';
+                tr.innerHTML = `
+                    <td class="p-4 text-slate-400 font-mono text-[11px]">${dateStr}</td>
+                    <td class="p-4 font-semibold text-white">${lead.name}</td>
+                    <td class="p-4 text-blue-400 font-mono">${lead.contact}</td>
+                    <td class="p-4">${serviceLabel}</td>
+                    <td class="p-4 max-w-xs truncate text-slate-400">${lead.details || 'Không có mô tả'}</td>
+                    <td class="p-4">${badge}</td>
+                    <td class="p-4 text-right">
+                        <button onclick="openModal(${realIndex})" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-borderClr">
+                            Chi Tiết ➔
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.openModal = function(index) {
+            currentLeadIndex = index;
+            const lead = allLeads[index];
+            document.getElementById('modalLeadName').textContent = `Brief của: ${lead.name}`;
+            document.getElementById('modalContact').textContent = `${lead.contact} (${lead.name})`;
+            document.getElementById('modalService').textContent = SERVICE_MAP[lead.service] || lead.service;
+            document.getElementById('modalDetails').textContent = lead.details || 'Không có mô tả chi tiết.';
+            document.getElementById('modalStatusSelect').value = lead.status || 'new';
+            document.getElementById('leadModal').classList.remove('hidden');
+        };
+
+        async function saveStatus() {
+            if (currentLeadIndex < 0) return;
+            const newStatus = document.getElementById('modalStatusSelect').value;
+            try {
+                const res = await fetch(`/api/leads/${currentLeadIndex}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    allLeads[currentLeadIndex].status = newStatus;
+                    updateStats();
+                    renderTable();
+                    document.getElementById('leadModal').classList.add('hidden');
+                }
+            } catch (err) {
+                alert('Lỗi cập nhật: ' + err);
+            }
+        }
+
+        function sendToStudio() {
+            if (currentLeadIndex < 0) return;
+            const lead = allLeads[currentLeadIndex];
+            const taskText = `DỰ ÁN TỪ KHÁCH HÀNG: ${lead.name}\n` +
+                             `Liên hệ: ${lead.contact}\n` +
+                             `Gói quan tâm: ${SERVICE_MAP[lead.service] || lead.service}\n\n` +
+                             `MÔ TẢ YÊU CẦU CỤ THỂ:\n${lead.details || 'Tối ưu theo chuẩn chuyên gia.'}`;
+            
+            // Lưu vào localStorage để Studio tự đọc
+            localStorage.setItem('agency_auto_task', taskText);
+            window.location.href = '/studio';
+        }
+
+        function exportCsv() {
+            if (allLeads.length === 0) {
+                alert('Không có dữ liệu để xuất!');
+                return;
+            }
+            let csv = 'Thời Gian,Họ Tên,Liên Hệ,Gói Dịch Vụ,Mô Tả,Trạng Thái\n';
+            allLeads.forEach(l => {
+                const row = [
+                    `"${l.created_at || ''}"`,
+                    `"${l.name || ''}"`,
+                    `"${l.contact || ''}"`,
+                    `"${SERVICE_MAP[l.service] || l.service}"`,
+                    `"${(l.details || '').replace(/"/g, '""')}"`,
+                    `"${l.status || 'new'}"`
+                ];
+                csv += row.join(',') + '\n';
+            });
+            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `TheAgency-Leads-${Date.now()}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
