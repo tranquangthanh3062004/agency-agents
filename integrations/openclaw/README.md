@@ -8,7 +8,11 @@ available.
 Before installing, generate the OpenClaw workspaces:
 
 ```bash
+# Bash (Linux / macOS)
 ./scripts/convert.sh --tool openclaw
+
+# Or Cross-platform Python (Windows / macOS / Linux)
+python scripts/convert_openclaw.py
 ```
 
 ## Install

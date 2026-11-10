@@ -4,6 +4,29 @@
     "contact": "0912345678",
     "service": "landing-page",
     "details": "Test brief lead",
-    "created_at": "2026-11-02T09:00:42.567486"
+    "created_at": "2026-11-02T09:00:42.567486",
+    "draft_deliverable": "# 📑 BẢN THẢO GIẢI PHÁP TỰ HÀNH 24/7 (THE AGENCY OS)\n**Chuyên gia điều phối**: Frontend Developer (`engineering/engineering-frontend-developer`)\n**Khách hàng tiếp nhận**: Nguyen Van Test | **Kênh liên hệ**: 0912345678\n**Dịch vụ**: landing-page\n**Thời gian xử lý**: 10/11/2026 17:47:13\n\n---\n\n## 1. 🔍 Phân Tích Yêu Cầu & Bối Cảnh\n- **Yêu cầu ghi nhận**: *\"Test brief lead\"*\n- **Đánh giá sơ bộ**: Nhu cầu rõ ràng, khả năng triển khai tức thì trong chu kỳ 24-48h.\n- **Định vị mục tiêu**: Tối ưu chi phí vận hành, tự động hóa quy trình bàn giao, đảm bảo tuân thủ chuẩn mực và tối đa tỷ lệ chuyển đổi.\n\n## 2. 📋 Kế Hoạch Thực Thi (Action Roadmap)\n- **Giai đoạn 1 (0-12h)**: Khảo sát hiện trạng, lập ma trận thông số kỹ thuật/tài chính, thiết lập môi trường staging.\n- **Giai đoạn 2 (12-24h)**: Chuyên gia `engineering-frontend-developer` phối hợp cùng bộ phận QA xây dựng sản phẩm bàn giao (Deliverable MVP).\n- **Giai đoạn 3 (24-36h)**: Kiểm thử tải, rà soát pháp lý/chính sách và chuẩn bị tài liệu hướng dẫn vận hành.\n- **Giai đoạn 4 (Bàn giao)**: Bàn giao toàn quyền truy cập, source code và dashboard quản trị.\n\n## 3. 🎯 Sản Phẩm Bàn Giao Cốt Lõi (Core Deliverable)\nDựa trên nghiệp vụ của `Frontend Developer`, các hạng mục sau được chuẩn bị sẵn sàng:\n- **Khung cấu trúc triển khai**: Thiết kế dạng modular có thể mở rộng quy mô mà không cần đập đi xây lại.\n- **Quy chuẩn vận hành**: Tích hợp các checkpoint kiểm tra chất lượng tự động trước khi nghiệm thu.\n- **Kịch bản chuyển đổi**: Định tuyến lead tự động vào Zalo OA / CRM để không bị sót khách hàng.\n\n## 4. 🚀 Đề Xuất Tiếp Theo Dành Cho Quản Trị Viên\n1. Liên hệ khách hàng qua số `0912345678` để xác nhận thời gian demo giải pháp.\n2. Mở trực tiếp brief này trong **AI Studio** nếu cần thêm các bước tinh chỉnh chuyên sâu bằng NEXUS multi-agent pipeline.\n",
+    "assigned_agent": {
+      "division": "engineering",
+      "slug": "engineering-frontend-developer",
+      "title": "Frontend Developer"
+    },
+    "fulfilled_at": "2026-11-10T17:47:13.809447",
+    "status": "ready-for-review"
+  },
+  {
+    "name": "Hoàng Thu Thảo",
+    "contact": "0988776655",
+    "service": "ecommerce-shopee",
+    "details": "Cần tối ưu gian hàng mỹ phẩm và kịch bản livestream TikTok Shop Mega Sale.",
+    "created_at": "2026-11-10T17:46:40.488356",
+    "status": "ready-for-review",
+    "draft_deliverable": "# 📑 BẢN THẢO GIẢI PHÁP TỰ HÀNH 24/7 (THE AGENCY OS)\n**Chuyên gia điều phối**: Vietnamese E-Commerce Strategist (`specialized/specialized-vietnamese-ecommerce-strategist`)\n**Khách hàng tiếp nhận**: Hoàng Thu Thảo | **Kênh liên hệ**: 0988776655\n**Dịch vụ**: ecommerce-shopee\n**Thời gian xử lý**: 10/11/2026 17:46:40\n\n---\n\n## 1. 🔍 Phân Tích Yêu Cầu & Bối Cảnh\n- **Yêu cầu ghi nhận**: *\"Cần tối ưu gian hàng mỹ phẩm và kịch bản livestream TikTok Shop Mega Sale.\"*\n- **Đánh giá sơ bộ**: Nhu cầu rõ ràng, khả năng triển khai tức thì trong chu kỳ 24-48h.\n- **Định vị mục tiêu**: Tối ưu chi phí vận hành, tự động hóa quy trình bàn giao, đảm bảo tuân thủ chuẩn mực và tối đa tỷ lệ chuyển đổi.\n\n## 2. 📋 Kế Hoạch Thực Thi (Action Roadmap)\n- **Giai đoạn 1 (0-12h)**: Khảo sát hiện trạng, lập ma trận thông số kỹ thuật/tài chính, thiết lập môi trường staging.\n- **Giai đoạn 2 (12-24h)**: Chuyên gia `specialized-vietnamese-ecommerce-strategist` phối hợp cùng bộ phận QA xây dựng sản phẩm bàn giao (Deliverable MVP).\n- **Giai đoạn 3 (24-36h)**: Kiểm thử tải, rà soát pháp lý/chính sách và chuẩn bị tài liệu hướng dẫn vận hành.\n- **Giai đoạn 4 (Bàn giao)**: Bàn giao toàn quyền truy cập, source code và dashboard quản trị.\n\n## 3. 🎯 Sản Phẩm Bàn Giao Cốt Lõi (Core Deliverable)\nDựa trên nghiệp vụ của `Vietnamese E-Commerce Strategist`, các hạng mục sau được chuẩn bị sẵn sàng:\n- **Khung cấu trúc triển khai**: Thiết kế dạng modular có thể mở rộng quy mô mà không cần đập đi xây lại.\n- **Quy chuẩn vận hành**: Tích hợp các checkpoint kiểm tra chất lượng tự động trước khi nghiệm thu.\n- **Kịch bản chuyển đổi**: Định tuyến lead tự động vào Zalo OA / CRM để không bị sót khách hàng.\n\n## 4. 🚀 Đề Xuất Tiếp Theo Dành Cho Quản Trị Viên\n1. Liên hệ khách hàng qua số `0988776655` để xác nhận thời gian demo giải pháp.\n2. Mở trực tiếp brief này trong **AI Studio** nếu cần thêm các bước tinh chỉnh chuyên sâu bằng NEXUS multi-agent pipeline.\n",
+    "assigned_agent": {
+      "division": "specialized",
+      "slug": "specialized-vietnamese-ecommerce-strategist",
+      "title": "Vietnamese E-Commerce Strategist"
+    },
+    "fulfilled_at": "2026-11-10T17:46:40.497975"
   }
 ]

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Agency OS — Quản Trị Khách Hàng (Leads Admin)</title>
+    <title>The Agency OS — Quản Trị Khách Hàng & 24/7 Autonomous Control Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -13,27 +13,46 @@
                         primary: '#2563eb',
                         darkBg: '#090d16',
                         cardBg: '#131b2e',
-                        borderClr: '#24324f'
+                        borderClr: '#24324f',
+                        terminalBg: '#060a12'
                     }
                 }
             }
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px #10b981); }
+            50% { opacity: 0.6; filter: drop-shadow(0 0 1px #10b981); }
+        }
+        .pulse-active {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+    </style>
 </head>
 <body class="bg-darkBg text-slate-100 font-sans min-h-screen flex flex-col">
 
     <!-- Top Navigation -->
-    <header class="border-b border-borderClr bg-slate-950/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+    <header class="border-b border-borderClr bg-slate-950/80 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-40">
         <div class="flex items-center gap-3">
             <span class="text-2xl">🎭</span>
             <div>
-                <h1 class="text-lg font-bold text-white tracking-tight">The Agency OS <span class="text-blue-500 font-mono text-xs px-2 py-0.5 bg-blue-950 border border-blue-500/30 rounded">Admin Portal</span></h1>
-                <p class="text-xs text-slate-400">Quản lý khách hàng, brief dự án & điều phối sản xuất</p>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-lg font-bold text-white tracking-tight">The Agency OS</h1>
+                    <span class="text-blue-400 font-mono text-[11px] px-2 py-0.5 bg-blue-950/80 border border-blue-500/30 rounded font-semibold">24/7 Autonomous Operations</span>
+                </div>
+                <p class="text-xs text-slate-400">Trung tâm điều hành doanh nghiệp 1 người tự động hóa 24/24</p>
             </div>
         </div>
 
         <div class="flex items-center gap-3 text-sm">
+            <!-- Daemon Status Pill -->
+            <div id="daemonStatusPill" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-medium shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-active"></span>
+                <span id="daemonStatusText">24/7 DAEMON ĐANG CHẠY</span>
+            </div>
+
             <a href="/" target="_blank" class="px-3 py-1.5 rounded-lg border border-borderClr hover:bg-slate-800 text-slate-300 transition text-xs flex items-center gap-1.5">
                 <i class="fa-solid fa-external-link"></i> Xem Landing Page
             </a>
@@ -45,6 +64,94 @@
 
     <!-- Main Content -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
+
+        <!-- 24/7 Autonomous Control Center Section -->
+        <div class="bg-cardBg border border-borderClr rounded-2xl p-5 shadow-xl space-y-5">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-borderClr">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm font-bold border border-blue-500/30">
+                            <i class="fa-solid fa-microchip"></i>
+                        </span>
+                        <h2 class="text-base font-bold text-white tracking-wide">Trung Tâm Tự Hành 24/7 (Autonomous Control Center)</h2>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-1">Hệ thống AI tự động tiếp nhận brief, phân tích và xuất bản thảo giải pháp không cần can thiệp thủ công.</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="btnToggleDaemon" class="px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white font-semibold text-xs transition flex items-center gap-1.5 shadow-md">
+                        <i class="fa-solid fa-power-off"></i> <span id="toggleDaemonLabel">Tạm Dừng 24/7</span>
+                    </button>
+                    <button id="btnTriggerFulfill" class="px-3.5 py-1.5 rounded-lg bg-blue-600/90 hover:bg-blue-500 text-white font-semibold text-xs transition flex items-center gap-1.5 shadow-md shadow-blue-600/20" title="Tự động xử lý tất cả brief mới">
+                        <i class="fa-solid fa-bolt"></i> Auto-Fulfill Leads
+                    </button>
+                    <button id="btnTriggerRadar" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 font-semibold text-xs border border-amber-500/30 transition flex items-center gap-1.5" title="Quét tín hiệu thị trường Shopee / TikTok Shop">
+                        <i class="fa-solid fa-radar"></i> Morning Radar
+                    </button>
+                    <button id="btnTriggerAudit" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 font-semibold text-xs border border-sky-500/30 transition flex items-center gap-1.5" title="Đối soát sổ sách và ngân sách">
+                        <i class="fa-solid fa-chart-pie"></i> Nightly Audit
+                    </button>
+                    <button id="btnClearLogs" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 text-xs border border-borderClr transition" title="Xóa lịch sử log">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Daemon Metrics & Live Terminal Log -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <!-- Metrics Left Panel (4 cols) -->
+                <div class="lg:col-span-4 space-y-3">
+                    <div class="bg-slate-900/70 border border-borderClr rounded-xl p-4">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-400">Thời gian chạy (Uptime):</span>
+                            <span class="font-mono text-emerald-400 font-semibold" id="daemonUptimeText">0m</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs mt-2">
+                            <span class="text-slate-400">Nhịp tim hệ thống:</span>
+                            <span class="font-mono text-slate-300" id="daemonHeartbeatText">Tick #0</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/70 border border-borderClr rounded-xl p-4 space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-300 font-medium">Bảo Vệ Ngân Sách (Token Guardrail)</span>
+                            <span class="font-mono text-xs text-blue-400 font-bold" id="budgetPercentText">0.0%</span>
+                        </div>
+                        <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-borderClr">
+                            <div id="budgetProgressBar" class="bg-gradient-to-r from-blue-500 to-emerald-400 h-full rounded-full transition-all duration-500" style="width: 2%;"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[11px] text-slate-500 font-mono">
+                            <span id="budgetUsedText">0 Tokens đã dùng</span>
+                            <span id="budgetMaxText">250,000 Hạn mức/ngày</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-blue-950/30 border border-blue-500/20 text-slate-300 text-xs leading-relaxed">
+                        <i class="fa-solid fa-circle-check text-blue-400 mr-1.5"></i>
+                        <span>Cơ chế <strong>Zero-Human Bottleneck</strong>: Khách gửi brief, hệ thống tự chọn chuyên gia, tự tạo bản thảo và sẵn sàng bàn giao.</span>
+                    </div>
+                </div>
+
+                <!-- Live Terminal Audit Logs (8 cols) -->
+                <div class="lg:col-span-8 flex flex-col">
+                    <div class="bg-terminalBg border border-borderClr rounded-xl p-3 flex-1 flex flex-col">
+                        <div class="flex items-center justify-between pb-2 border-b border-borderClr/60 text-[11px] text-slate-400 font-mono">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
+                                <span class="ml-2 font-semibold text-slate-300">24/7 Real-Time Sentinel Audit Feed</span>
+                            </div>
+                            <span class="text-slate-500" id="logCountBadge">0 events</span>
+                        </div>
+                        <div id="terminalLogContainer" class="flex-1 overflow-y-auto max-h-48 p-2 font-mono text-[11px] space-y-1.5 text-slate-300 select-text">
+                            <div class="text-slate-500 italic">Đang đồng bộ luồng kiểm toán thời gian thực...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Stats Overview Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="bg-cardBg border border-borderClr rounded-xl p-5">
@@ -74,11 +181,11 @@
             <div class="bg-cardBg border border-borderClr rounded-xl p-5">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Đang Thực Thi</p>
-                        <h3 class="text-3xl font-black text-sky-400 mt-1" id="statInProgress">0</h3>
+                        <p class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Sẵn Sàng Bàn Giao</p>
+                        <h3 class="text-3xl font-black text-emerald-400 mt-1" id="statReadyReview">0</h3>
                     </div>
-                    <span class="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-gears"></i>
+                    <span class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-robot"></i>
                     </span>
                 </div>
             </div>
@@ -87,9 +194,9 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Đã Hoàn Thành</p>
-                        <h3 class="text-3xl font-black text-emerald-400 mt-1" id="statCompleted">0</h3>
+                        <h3 class="text-3xl font-black text-sky-400 mt-1" id="statCompleted">0</h3>
                     </div>
-                    <span class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                    <span class="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center text-lg">
                         <i class="fa-solid fa-circle-check"></i>
                     </span>
                 </div>
@@ -107,10 +214,11 @@
                     </div>
                     <select id="statusFilter" class="bg-slate-900 border border-borderClr rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none">
                         <option value="all">Tất cả trạng thái</option>
-                        <option value="new">Mới (Chưa xử lý)</option>
-                        <option value="contacted">Đã liên hệ</option>
-                        <option value="in-progress">Đang thực thi</option>
-                        <option value="completed">Đã hoàn thành</option>
+                        <option value="new">🟡 Mới (Chưa xử lý)</option>
+                        <option value="ready-for-review">🤖 Sẵn Sàng Bàn Giao (Auto)</option>
+                        <option value="in-progress">⚙️ Đang thực thi</option>
+                        <option value="contacted">📞 Đã liên hệ</option>
+                        <option value="completed">✅ Đã hoàn thành</option>
                     </select>
                 </div>
 
@@ -131,9 +239,9 @@
                         <tr class="bg-slate-950/60 border-b border-borderClr text-slate-400 font-semibold uppercase tracking-wider">
                             <th class="p-4">Thời Gian</th>
                             <th class="p-4">Khách Hàng</th>
-                            <th class="p-4">Số Điện Thoại / Zalo</th>
+                            <th class="p-4">Liên Hệ</th>
                             <th class="p-4">Gói Dịch Vụ</th>
-                            <th class="p-4">Nội Dung Brief</th>
+                            <th class="p-4">Chuyên Gia Điều Phối</th>
                             <th class="p-4">Trạng Thái</th>
                             <th class="p-4 text-right">Thao Tác</th>
                         </tr>
@@ -149,41 +257,72 @@
     </main>
 
     <!-- Detail & Action Modal -->
-    <div id="leadModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-cardBg border border-borderClr rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl">
-            <div class="p-5 border-b border-borderClr flex justify-between items-center">
-                <h3 class="font-bold text-white text-sm" id="modalLeadName">Chi Tiết Brief Dự Án</h3>
+    <div id="leadModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-borderClr rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+            <div class="p-5 border-b border-borderClr flex justify-between items-center bg-slate-900/50">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">📑</span>
+                    <h3 class="font-bold text-white text-sm" id="modalLeadName">Chi Tiết Brief Dự Án</h3>
+                </div>
                 <button id="btnCloseModal" class="text-slate-400 hover:text-white text-base">✕</button>
             </div>
-            <div class="p-5 space-y-4 text-xs">
-                <div>
-                    <label class="text-slate-400 font-semibold uppercase text-[10px]">Thông tin liên hệ</label>
-                    <p class="text-white font-medium text-sm mt-0.5" id="modalContact"></p>
+            
+            <div class="p-5 space-y-4 text-xs overflow-y-auto flex-1">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-slate-400 font-semibold uppercase text-[10px]">Thông tin liên hệ</label>
+                        <p class="text-white font-medium text-sm mt-0.5" id="modalContact"></p>
+                    </div>
+                    <div>
+                        <label class="text-slate-400 font-semibold uppercase text-[10px]">Gói quan tâm</label>
+                        <p class="text-blue-400 font-semibold text-sm mt-0.5" id="modalService"></p>
+                    </div>
                 </div>
-                <div>
-                    <label class="text-slate-400 font-semibold uppercase text-[10px]">Gói quan tâm</label>
-                    <p class="text-blue-400 font-semibold text-sm mt-0.5" id="modalService"></p>
-                </div>
+
                 <div>
                     <label class="text-slate-400 font-semibold uppercase text-[10px]">Yêu cầu chi tiết từ khách</label>
-                    <div class="bg-slate-950/80 p-3.5 rounded-lg border border-borderClr text-slate-200 mt-1 whitespace-pre-wrap leading-relaxed" id="modalDetails"></div>
+                    <div class="bg-slate-950/80 p-3 rounded-lg border border-borderClr text-slate-200 mt-1 whitespace-pre-wrap leading-relaxed" id="modalDetails"></div>
                 </div>
-                <div>
-                    <label class="text-slate-400 font-semibold uppercase text-[10px]">Cập nhật trạng thái</label>
-                    <select id="modalStatusSelect" class="w-full bg-slate-900 border border-borderClr rounded-lg p-2 text-xs text-white mt-1">
-                        <option value="new">🟡 Mới (Chưa xử lý)</option>
-                        <option value="contacted">📞 Đã liên hệ Zalo/Phone</option>
-                        <option value="in-progress">⚙️ Đang cho AI chạy trong Studio</option>
-                        <option value="completed">✅ Đã hoàn thành bàn giao</option>
-                    </select>
+
+                <!-- Auto-Generated Deliverable Section -->
+                <div id="deliverableContainer" class="border border-emerald-500/30 rounded-xl bg-slate-950/90 overflow-hidden hidden">
+                    <div class="p-3 bg-emerald-950/40 border-b border-emerald-500/20 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-emerald-400 font-bold text-xs"><i class="fa-solid fa-robot mr-1"></i> BẢN THẢO GIẢI PHÁP TỰ ĐỘNG TẠO 24/7</span>
+                            <span id="modalAssignedAgent" class="px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-500/30 text-[10px] font-mono"></span>
+                        </div>
+                        <button id="btnCopyDeliverable" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] border border-borderClr transition flex items-center gap-1">
+                            <i class="fa-regular fa-copy"></i> Sao Chép
+                        </button>
+                    </div>
+                    <pre class="p-4 text-slate-200 font-mono text-[11px] whitespace-pre-wrap max-h-64 overflow-y-auto leading-relaxed" id="modalDeliverableText"></pre>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div>
+                        <label class="text-slate-400 font-semibold uppercase text-[10px]">Cập nhật trạng thái</label>
+                        <select id="modalStatusSelect" class="w-full bg-slate-900 border border-borderClr rounded-lg p-2 text-xs text-white mt-1">
+                            <option value="new">🟡 Mới (Chưa xử lý)</option>
+                            <option value="ready-for-review">🤖 Sẵn Sàng Bàn Giao (Auto)</option>
+                            <option value="contacted">📞 Đã liên hệ Zalo/Phone</option>
+                            <option value="in-progress">⚙️ Đang tinh chỉnh trong Studio</option>
+                            <option value="completed">✅ Đã hoàn thành bàn giao</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button id="btnReFulfill" class="w-full py-2 rounded-lg bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 font-medium text-xs flex items-center justify-center gap-1.5 transition">
+                            <i class="fa-solid fa-rotate"></i> Tạo Lại Bản Thảo Tự Hành
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="p-4 border-t border-borderClr bg-slate-900/50 flex justify-between items-center">
+
+            <div class="p-4 border-t border-borderClr bg-slate-900/50 flex flex-wrap justify-between items-center gap-3">
                 <button id="btnSendToStudio" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 shadow-md shadow-blue-600/30">
-                    <i class="fa-solid fa-bolt"></i> Chuyển Brief Vào Studio Chạy Ngay
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Mở Bản Thảo Trong AI Studio Để Tinh Chỉnh
                 </button>
-                <button id="btnSaveStatus" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs">
-                    Lưu Thay Đổi
+                <button id="btnSaveStatus" class="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-600/20">
+                    Lưu Cập Nhật
                 </button>
             </div>
         </div>
@@ -193,6 +332,7 @@
     <script>
         let allLeads = [];
         let currentLeadIndex = -1;
+        let daemonData = { is_active: true };
 
         const SERVICE_MAP = {
             'audit-free': '🎁 Báo Cáo Audit Miễn Phí',
@@ -205,18 +345,28 @@
 
         const STATUS_BADGES = {
             'new': '<span class="px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 border border-amber-500/30">Mới</span>',
+            'ready-for-review': '<span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-semibold shadow-sm shadow-emerald-500/20">🤖 Sẵn Sàng Bàn Giao</span>',
             'contacted': '<span class="px-2 py-0.5 rounded-full bg-blue-950 text-blue-400 border border-blue-500/30">Đã Liên Hệ</span>',
-            'in-progress': '<span class="px-2 py-0.5 rounded-full bg-purple-950 text-purple-400 border border-purple-500/30">Đang Xử Lý</span>',
-            'completed': '<span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/30">Hoàn Thành</span>'
+            'in-progress': '<span class="px-2 py-0.5 rounded-full bg-purple-950 text-purple-400 border border-purple-500/30">Đang Tinh Chỉnh</span>',
+            'completed': '<span class="px-2 py-0.5 rounded-full bg-sky-950 text-sky-400 border border-sky-500/30">Hoàn Thành</span>'
         };
 
         document.addEventListener('DOMContentLoaded', () => {
             fetchLeads();
+            fetchDaemonStatus();
             setupEvents();
+
+            // Refresh status & logs every 8 seconds
+            setInterval(() => {
+                fetchDaemonStatus();
+            }, 8000);
         });
 
         function setupEvents() {
-            document.getElementById('btnRefresh').addEventListener('click', fetchLeads);
+            document.getElementById('btnRefresh').addEventListener('click', () => {
+                fetchLeads();
+                fetchDaemonStatus();
+            });
             document.getElementById('searchInput').addEventListener('input', renderTable);
             document.getElementById('statusFilter').addEventListener('change', renderTable);
             document.getElementById('btnCloseModal').addEventListener('click', () => {
@@ -225,6 +375,15 @@
             document.getElementById('btnSaveStatus').addEventListener('click', saveStatus);
             document.getElementById('btnSendToStudio').addEventListener('click', sendToStudio);
             document.getElementById('btnExportCsv').addEventListener('click', exportCsv);
+            document.getElementById('btnReFulfill').addEventListener('click', reFulfillLead);
+            document.getElementById('btnCopyDeliverable').addEventListener('click', copyDeliverable);
+
+            // Daemon controls
+            document.getElementById('btnToggleDaemon').addEventListener('click', toggleDaemon);
+            document.getElementById('btnTriggerFulfill').addEventListener('click', () => triggerJob('auto-fulfill'));
+            document.getElementById('btnTriggerRadar').addEventListener('click', () => triggerJob('morning-radar'));
+            document.getElementById('btnTriggerAudit').addEventListener('click', () => triggerJob('nightly-audit'));
+            document.getElementById('btnClearLogs').addEventListener('click', clearDaemonLogs);
         }
 
         async function fetchLeads() {
@@ -239,14 +398,133 @@
             }
         }
 
+        async function fetchDaemonStatus() {
+            try {
+                const res = await fetch('/api/daemon/status');
+                const data = await res.json();
+                daemonData = data;
+                renderDaemonStatus(data);
+            } catch (err) {
+                console.error('Lỗi tải daemon status:', err);
+            }
+        }
+
+        function renderDaemonStatus(data) {
+            const pill = document.getElementById('daemonStatusPill');
+            const pillText = document.getElementById('daemonStatusText');
+            const toggleBtn = document.getElementById('btnToggleDaemon');
+            const toggleLabel = document.getElementById('toggleDaemonLabel');
+
+            if (data.is_active) {
+                pill.className = 'flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-medium shadow-sm';
+                pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 pulse-active"></span><span>24/7 DAEMON ĐANG CHẠY</span>';
+                toggleBtn.className = 'px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white font-semibold text-xs transition flex items-center gap-1.5 shadow-md';
+                toggleLabel.textContent = 'Tạm Dừng 24/7';
+            } else {
+                pill.className = 'flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-950/70 border border-amber-500/40 text-amber-300 text-xs font-mono font-medium shadow-sm';
+                pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>24/7 ĐANG TẠM DỪNG</span>';
+                toggleBtn.className = 'px-3.5 py-1.5 rounded-lg bg-amber-700 hover:bg-amber-600 text-white font-semibold text-xs transition flex items-center gap-1.5 shadow-md';
+                toggleLabel.textContent = 'Bật Lại 24/7';
+            }
+
+            // Uptime format
+            const minutes = Math.floor((data.uptime_seconds || 0) / 60);
+            const hours = Math.floor(minutes / 60);
+            const displayUptime = hours > 0 ? `${hours}h ${minutes % 60}m` : `${minutes}m ${data.uptime_seconds % 60}s`;
+            document.getElementById('daemonUptimeText').textContent = displayUptime;
+            document.getElementById('daemonHeartbeatText').textContent = `Tick #${data.tick_count || 0}`;
+
+            // Budget
+            document.getElementById('budgetPercentText').textContent = `${data.budget_percent || 0}%`;
+            document.getElementById('budgetProgressBar').style.width = `${Math.min(100, Math.max(2, data.budget_percent || 0))}%`;
+            document.getElementById('budgetUsedText').textContent = `${(data.used_tokens_today || 0).toLocaleString()} Tokens`;
+            document.getElementById('budgetMaxText').textContent = `${(data.max_daily_budget_tokens || 250000).toLocaleString()} Hạn mức`;
+
+            // Terminal Logs
+            renderAuditLogs(data.audit_logs || []);
+        }
+
+        function renderAuditLogs(logs) {
+            const container = document.getElementById('terminalLogContainer');
+            document.getElementById('logCountBadge').textContent = `${logs.length} sự kiện`;
+            if (logs.length === 0) {
+                container.innerHTML = '<div class="text-slate-500 italic">Chưa có sự kiện nào được ghi nhận.</div>';
+                return;
+            }
+
+            container.innerHTML = logs.map(l => {
+                let badgeClr = 'bg-slate-800 text-slate-300';
+                if (l.event_type === 'AUTO_FULFILL') badgeClr = 'bg-emerald-950 text-emerald-300 border border-emerald-500/30';
+                else if (l.event_type === 'RADAR') badgeClr = 'bg-amber-950 text-amber-300 border border-amber-500/30';
+                else if (l.event_type === 'AUDIT') badgeClr = 'bg-sky-950 text-sky-300 border border-sky-500/30';
+                else if (l.event_type === 'BUDGET') badgeClr = 'bg-purple-950 text-purple-300 border border-purple-500/30';
+                else if (l.event_type === 'ERROR') badgeClr = 'bg-rose-950 text-rose-300 border border-rose-500/30';
+
+                return `
+                    <div class="flex items-start gap-2 hover:bg-slate-900/60 p-1 rounded transition">
+                        <span class="text-slate-500 text-[10px] shrink-0 font-mono">[${l.timestamp}]</span>
+                        <span class="px-1.5 py-0.2 rounded text-[9px] font-semibold tracking-wider uppercase shrink-0 ${badgeClr}">${l.event_type}</span>
+                        <span class="text-slate-400 font-semibold shrink-0">${l.actor}:</span>
+                        <span class="text-slate-200 break-words">${l.message}</span>
+                    </div>
+                `;
+            }).join('');
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function toggleDaemon() {
+            try {
+                const nextState = !daemonData.is_active;
+                const res = await fetch('/api/daemon/toggle', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ active: nextState })
+                });
+                const data = await res.json();
+                fetchDaemonStatus();
+            } catch (err) {
+                alert('Lỗi chuyển trạng thái: ' + err);
+            }
+        }
+
+        async function triggerJob(jobId) {
+            try {
+                const res = await fetch('/api/daemon/trigger-job', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ job_id: jobId })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    setTimeout(() => {
+                        fetchLeads();
+                        fetchDaemonStatus();
+                    }, 1200);
+                }
+            } catch (err) {
+                alert('Lỗi kích hoạt tác vụ: ' + err);
+            }
+        }
+
+        async function clearDaemonLogs() {
+            if (!confirm('Bạn có chắc muốn xóa sạch log kiểm toán?')) return;
+            try {
+                await fetch('/api/daemon/clear-logs', { method: 'POST' });
+                fetchDaemonStatus();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
         function updateStats() {
             document.getElementById('statTotalLeads').textContent = allLeads.length;
             const newCount = allLeads.filter(l => !l.status || l.status === 'new').length;
-            const inProgCount = allLeads.filter(l => l.status === 'in-progress' || l.status === 'contacted').length;
+            const readyCount = allLeads.filter(l => l.status === 'ready-for-review').length;
             const doneCount = allLeads.filter(l => l.status === 'completed').length;
 
             document.getElementById('statNewLeads').textContent = newCount;
-            document.getElementById('statInProgress').textContent = inProgCount;
+            document.getElementById('statReadyReview').textContent = readyCount;
             document.getElementById('statCompleted').textContent = doneCount;
         }
 
@@ -275,6 +553,10 @@
                 const serviceLabel = SERVICE_MAP[lead.service] || lead.service;
                 const dateStr = lead.created_at ? new Date(lead.created_at).toLocaleString('vi-VN') : 'Vừa xong';
 
+                const assignedAgentHtml = lead.assigned_agent 
+                    ? `<span class="px-2 py-0.5 rounded bg-blue-950/80 text-blue-300 border border-blue-500/30 text-[11px]"><i class="fa-solid fa-user-gear mr-1"></i>${lead.assigned_agent.title}</span>`
+                    : '<span class="text-slate-500 italic">Đang chờ gán</span>';
+
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-900/50 transition cursor-pointer';
                 tr.innerHTML = `
@@ -282,11 +564,11 @@
                     <td class="p-4 font-semibold text-white">${lead.name}</td>
                     <td class="p-4 text-blue-400 font-mono">${lead.contact}</td>
                     <td class="p-4">${serviceLabel}</td>
-                    <td class="p-4 max-w-xs truncate text-slate-400">${lead.details || 'Không có mô tả'}</td>
+                    <td class="p-4">${assignedAgentHtml}</td>
                     <td class="p-4">${badge}</td>
                     <td class="p-4 text-right">
                         <button onclick="openModal(${realIndex})" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-borderClr">
-                            Chi Tiết ➔
+                            ${lead.draft_deliverable ? 'Xem Bản Thảo ➔' : 'Chi Tiết ➔'}
                         </button>
                     </td>
                 `;
@@ -302,6 +584,16 @@
             document.getElementById('modalService').textContent = SERVICE_MAP[lead.service] || lead.service;
             document.getElementById('modalDetails').textContent = lead.details || 'Không có mô tả chi tiết.';
             document.getElementById('modalStatusSelect').value = lead.status || 'new';
+
+            const deliverableContainer = document.getElementById('deliverableContainer');
+            if (lead.draft_deliverable) {
+                deliverableContainer.classList.remove('hidden');
+                document.getElementById('modalDeliverableText').textContent = lead.draft_deliverable;
+                document.getElementById('modalAssignedAgent').textContent = lead.assigned_agent ? lead.assigned_agent.title : 'Tự Động';
+            } else {
+                deliverableContainer.classList.add('hidden');
+            }
+
             document.getElementById('leadModal').classList.remove('hidden');
         };
 
@@ -326,15 +618,48 @@
             }
         }
 
+        async function reFulfillLead() {
+            if (currentLeadIndex < 0) return;
+            const btn = document.getElementById('btnReFulfill');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+            try {
+                const res = await fetch(`/api/leads/${currentLeadIndex}/fulfill`, {
+                    method: 'POST'
+                });
+                const data = await res.json();
+                if (data.success) {
+                    await fetchLeads();
+                    openModal(currentLeadIndex);
+                } else {
+                    alert('Lỗi tạo bản thảo: ' + (data.message || 'Không rõ'));
+                }
+            } catch (err) {
+                alert('Lỗi: ' + err);
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Tạo Lại Bản Thảo Tự Hành';
+            }
+        }
+
+        function copyDeliverable() {
+            const text = document.getElementById('modalDeliverableText').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('btnCopyDeliverable');
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã Sao Chép!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fa-regular fa-copy"></i> Sao Chép';
+                }, 2000);
+            });
+        }
+
         function sendToStudio() {
             if (currentLeadIndex < 0) return;
             const lead = allLeads[currentLeadIndex];
             const taskText = `DỰ ÁN TỪ KHÁCH HÀNG: ${lead.name}\n` +
                              `Liên hệ: ${lead.contact}\n` +
                              `Gói quan tâm: ${SERVICE_MAP[lead.service] || lead.service}\n\n` +
-                             `MÔ TẢ YÊU CẦU CỤ THỂ:\n${lead.details || 'Tối ưu theo chuẩn chuyên gia.'}`;
+                             `MÔ TẢ YÊU CẦU CỤ THỂ:\n${lead.details || 'Tối ưu theo chuẩn chuyên gia.'}\n\n` +
+                             (lead.draft_deliverable ? `BẢN THẢO HIỆN TẠI TỪ CHUYÊN GIA:\n${lead.draft_deliverable}` : '');
             
-            // Lưu vào localStorage để Studio tự đọc
             localStorage.setItem('agency_auto_task', taskText);
             window.location.href = '/studio';
         }
@@ -344,15 +669,17 @@
                 alert('Không có dữ liệu để xuất!');
                 return;
             }
-            let csv = 'Thời Gian,Họ Tên,Liên Hệ,Gói Dịch Vụ,Mô Tả,Trạng Thái\n';
+            let csv = 'Thời Gian,Họ Tên,Liên Hệ,Gói Dịch Vụ,Chuyên Gia,Trạng Thái,Bản Thảo\n';
             allLeads.forEach(l => {
+                const agent = l.assigned_agent ? l.assigned_agent.title : 'Chưa gán';
                 const row = [
                     `"${l.created_at || ''}"`,
                     `"${l.name || ''}"`,
                     `"${l.contact || ''}"`,
                     `"${SERVICE_MAP[l.service] || l.service}"`,
-                    `"${(l.details || '').replace(/"/g, '""')}"`,
-                    `"${l.status || 'new'}"`
+                    `"${agent}"`,
+                    `"${l.status || 'new'}"`,
+                    `"${(l.draft_deliverable || '').replace(/"/g, '""')}"`
                 ];
                 csv += row.join(',') + '\n';
             });
